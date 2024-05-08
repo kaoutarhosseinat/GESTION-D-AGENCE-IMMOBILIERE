@@ -9,6 +9,12 @@ drop table rendez_vous
 drop table agent_immb
 /
 
+CREATE TABLE agent_immb(
+    ID_Agent number (10) PRIMARY KEY not null,
+    noma varchar2(20) not null,
+    prenoma varchar2(20) not null
+)
+/
 
 CREATE TABLE BIEN_IMMOBILIERS(
     id_bienimm number(10) PRIMARY KEY  not null,
@@ -54,9 +60,4 @@ CREATE TABLE rendez_vous(
     REFERENCES CLIENT (id_client)
 )
 /
-CREATE TABLE agent_immb(
-    ID_Agent number (10) not null,
-    noma varchar2(20) not null,
-    prenoma varchar2(20) not null
-)
-/
+

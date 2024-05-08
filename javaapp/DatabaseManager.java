@@ -1,4 +1,5 @@
 package javaapp;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,14 +8,15 @@ import java.sql.SQLException;
 public class DatabaseManager {
     private static Connection connection;
 
-    public static Connection getConnection() {
-        if (connection == null) {
+    public static Connection getConnection() throws SQLException {
+        if (connection == null || connection.isClosed()) {
             try {
                 Class.forName("oracle.jdbc.driver.OracleDriver");
-                connection = DriverManager.getConnection("jdbc:oracle:thin:@DESKTOP-19S3UPM:1521:XE", "HOSSEINAT", "kaoutar");
+                connection = DriverManager.getConnection("jdbc:oracle:thin:@DESKTOP-19S3UPM:1521:XE", "HOSSEINAT",
+                        "kaoutar");
                 System.out.println("Connected to the database.");
             } catch (ClassNotFoundException | SQLException e) {
-                e.printStackTrace();
+                throw new SQLException("Failed to connect to the database", e);
             }
         }
         return connection;
@@ -30,8 +32,8 @@ public class DatabaseManager {
             }
         }
     }
-   
-    public static void ajouterBienImm(BienImmobilier Bimm) {
+
+    public static void ajouterBienImm(BienImmobilier Bimm) throws SQLException {
         String query = "INSERT INTO BIEN_IMMOBILIERS (id_bienimm, typebi, taille, PRIX, localisation, descbi, ID_Agent) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -49,9 +51,23 @@ public class DatabaseManager {
             } else {
                 System.out.println("Échec de l'ajout du bien immobilier.");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }
+    }
+
+    public static void supprimerBienImm(int id) throws SQLException {
+        try (Connection connection = getConnection()) {
+            String query = "DELETE FROM BIEN_IMMOBILIERS WHERE id_bienimm=?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, id);
+                int rowsAffected = preparedStatement.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Bien avec l'identifiant " + id + " supprimé avec succès.");
+                } else {
+                    System.out.println("Aucun bien trouvé avec l'identifiant fourni.");
+                }
+            }
         }
     }
 }
+
 
