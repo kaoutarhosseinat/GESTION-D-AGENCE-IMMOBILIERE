@@ -53,7 +53,7 @@ public class Main {
         }
 
     
-        System.out.print("Enter the ID of the property you want to delete: ");
+        System.out.print("Id de bien a supprimer  ");
         int id = scanner.nextInt();
         BienImmobilier bienASupprimer = new BienImmobilier();
         bienASupprimer.setid_bienimm(id);
