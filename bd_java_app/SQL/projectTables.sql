@@ -1,3 +1,5 @@
+drop table agent_immb
+/
 drop TABLE BIEN_IMMOBILIERS
 /
 drop TABLE CLIENT
@@ -6,8 +8,7 @@ drop table transactions
 /
 drop table rendez_vous
 /
-drop table agent_immb
-/
+
 
 CREATE TABLE agent_immb(
     ID_Agent number (10) PRIMARY KEY not null,
@@ -19,8 +20,8 @@ CREATE TABLE agent_immb(
 CREATE TABLE BIEN_IMMOBILIERS(
     id_bienimm number(10) PRIMARY KEY  not null,
     typebi varchar2(30) not null,
-    taille number(10,10) not null,
-    PRIX number(10,10) not null,
+    sizebi number(10,1) not null,
+    PRIX number(10,1) not null,
     localisation varchar2(50) not null,
     descbi varchar2(500) not null,
     ID_Agent number(10) not null,

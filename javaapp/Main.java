@@ -1,8 +1,13 @@
 package javaapp;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Scanner;
+
+
 
 
 public class Main {
@@ -10,36 +15,36 @@ public class Main {
        
         try (Connection connection = DatabaseManager.getConnection()) {
         } catch (SQLException e1) {
-            // TODO Auto-generated catch block
+        
             e1.printStackTrace();
         }
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("ID Bien Immobillier: ");
+        System.out.println("ID Bien Immobillier: ");
         int id_bienimm = scanner.nextInt();
 
-        System.out.print("Type de Bien Immobillier: ");
+        System.out.println("Type de Bien Immobillier: ");
         String type = scanner.next();
 
-        System.out.print("La Taille de Bien Immobillier : ");
-        int size_bimm = scanner.nextInt();
+        System.out.println("La Taille de Bien Immobillier : ");
+        int sizebi = scanner.nextInt();
 
-        System.out.print("Prix: ");
+        System.out.println("Prix: ");
         int prix = scanner.nextInt();
 
-        System.out.print("Localisation: ");
+        System.out.println("Localisation: ");
         String local = scanner.next();
 
-        System.out.print("Description: ");
+        System.out.println("Description: ");
         String desc = scanner.next();
 
-        System.out.print("ID Agent Immobillier: ");
+        System.out.println("ID Agent Immobillier: ");
         int id_agent= scanner.nextInt();
         
         BienImmobilier BienImm = new BienImmobilier();
         BienImm.setid_bienimm(id_bienimm);
         BienImm.setType(type);
-        BienImm.setTaille(size_bimm);
+        BienImm.setTaille(sizebi);
         BienImm.setPrix(prix);
         BienImm.setLocalisation(local);
         BienImm.setDescription(desc);
@@ -48,22 +53,54 @@ public class Main {
         try {
             DatabaseManager.ajouterBienImm(BienImm);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+           
             e.printStackTrace();
         }
 
     
-        System.out.print("Id de bien a supprimer  ");
+        System.out.println("Id de bien à supprimer  ");
         int id = scanner.nextInt();
         BienImmobilier bienASupprimer = new BienImmobilier();
         bienASupprimer.setid_bienimm(id);
         try {
             DatabaseManager.supprimerBienImm(bienASupprimer.getId_bien_imm());
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            
             e.printStackTrace();
         }
         
-        DatabaseManager.closeConnection();
+        DatabaseManager.closeConnection(); 
+        
+        
+        System.out.println("Entrer Id de bien à modifier");
+        int idu = scanner.nextInt();
+        boolean exist = DatabaseManager.exist(id);
+        if (!exist) {
+            System.out.println("le bien n'existe pas");
+            DatabaseManager.closeConnection();
+            return;
+        }
+      
     }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
+        
+       
