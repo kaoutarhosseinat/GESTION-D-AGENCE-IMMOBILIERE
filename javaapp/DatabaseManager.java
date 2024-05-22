@@ -147,6 +147,62 @@ public static void rechercherBiens(String typeb, int prixb, String localisation)
             }
         }
     }
+    
+    public static void ajouterClient(Client client) throws SQLException {
+        String query = "INSERT INTO client (id_client, nomc, prenomc, typec,demandec,numTransaction) VALUES (?, ?, ?)";
+        try (Connection connection = DatabaseManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, client.getId_client());
+            preparedStatement.setString(2, client.getNomc());
+            preparedStatement.setString(3, client.getPreNomc());
+            preparedStatement.setString(4, client.getTypec());
+            preparedStatement.setString(5, client.getdemandec());
+            preparedStatement.setInt(6, client.getNumTransaction());
+            
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Client ajouté avec succès.");
+            } else {
+                System.out.println("Échec de l'ajout du client.");
+            }
+        }
+
+    }
+    public static void modifierClient(Client client) throws SQLException {
+        String query = "UPDATE client SET nomc=?,prenomc=?,typec=?,demandec=?,numTransaction=? WHERE id_client=?";
+        try (Connection connection = DatabaseManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, client.getNomc());
+            preparedStatement.setString(2, client.getPreNomc());
+            preparedStatement.setString(3, client.getTypec());
+            preparedStatement.setString(4, client.getdemandec());
+            preparedStatement.setInt(5, client.getNumTransaction());
+            preparedStatement.setInt(6, client.getId_client());
+            
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Client modifié avec succès.");
+            } else {
+                System.out.println("Échec de la modification du client.");
+            }
+        }
+
+    }
+    
+    public static void supprimerClient(int idClient) throws SQLException {
+        String query = "DELETE FROM client WHERE id_client=?";
+        try (Connection connection = DatabaseManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, idClient);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Client supprimé avec succès.");
+            } else {
+                System.out.println("Aucun client trouvé avec l'identifiant fourni.");
+            }
+        }
+    }
     public void enregistrerPaiement(Transactions tran) {
     try (Connection connection = DatabaseManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(

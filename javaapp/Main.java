@@ -88,12 +88,12 @@ public class Main {
                 e.printStackTrace();} */
                 
 
-            System.out.print("Entrez l'ID du client: ");
+        System.out.print("Entrez l'ID du client: ");
             int idClient = scanner.nextInt();
             scanner.nextLine(); 
 
             
-            Client client = DatabaseManager.recupererClient(idClient);
+        Client client = DatabaseManager.recupererClient(idClient);
             if (client == null) {
                 System.out.println("Client non trouvé dans la base de données.");
                 return;
