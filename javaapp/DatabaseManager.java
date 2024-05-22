@@ -112,7 +112,41 @@ public class DatabaseManager {
 }
 }
 
-public void enregistrerPaiement(Transactions tran) {
+
+public static void rechercherBiens(String typeb, int prixb, String localisation) throws SQLException {
+        String query4 = "SELECT * FROM BIEN_IMMOBILIERS WHERE typebi = ? AND PRIX = ? AND localisation = ?";
+        boolean trouve = false; 
+        try (Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query4)) {
+            preparedStatement.setString(1, typeb);
+            preparedStatement.setInt(2, prixb);
+            preparedStatement.setString(3, localisation);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                trouve = true;
+                int id = resultSet.getInt("id_bienimm");
+                String typebi = resultSet.getString("typebi");
+                int size = resultSet.getInt("sizebi");
+                int price = resultSet.getInt("PRIX");
+                String location = resultSet.getString("localisation");
+                String description = resultSet.getString("descbi");
+                int agentId = resultSet.getInt("ID_Agent");
+                
+                System.out.println("Property ID: " + id);
+                System.out.println("Type: " + typebi);
+                System.out.println("Size: " + size);
+                System.out.println("Price: " + price);
+                System.out.println("Location: " + location);
+                System.out.println("Description: " + description);
+                System.out.println("Agent ID: " + agentId);
+        
+            }
+            if (!trouve) {
+                System.out.println("Le bien que vous avez recherché n'existe pas.");
+            }
+        }
+    }
+    public void enregistrerPaiement(Transactions tran) {
     try (Connection connection = DatabaseManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO PAIEMENTS (numTransaction, paiement, dateT, typeT, id_client, id_bienimm) VALUES (?, ?, ?)")) {
@@ -131,34 +165,6 @@ public void enregistrerPaiement(Transactions tran) {
     } catch (SQLException e) {
     }
 }
-public static void rechercherBiens(String type, int prix, String localisation) throws SQLException {
-        String query4 = "SELECT * FROM BIEN_IMMOBILIERS WHERE typebi = ? AND PRIX = ? AND localisation = ?";
-        try (Connection connection = getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(query4)) {
-            preparedStatement.setString(1, type);
-            preparedStatement.setInt(2, prix);
-            preparedStatement.setString(3, localisation);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id_bienimm");
-                String typebi = resultSet.getString("typebi");
-                int size = resultSet.getInt("sizebi");
-                int price = resultSet.getInt("PRIX");
-                String location = resultSet.getString("localisation");
-                String description = resultSet.getString("descbi");
-                int agentId = resultSet.getInt("ID_Agent");
-                
-                System.out.println("Property ID: " + id);
-                System.out.println("Type: " + typebi);
-                System.out.println("Size: " + size);
-                System.out.println("Price: " + price);
-                System.out.println("Location: " + location);
-                System.out.println("Description: " + description);
-                System.out.println("Agent ID: " + agentId);
-        
-            }
-        }
-    }
 }
 
 

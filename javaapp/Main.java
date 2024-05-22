@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
        
         try (Connection connection = DatabaseManager.getConnection()) {
         } catch (SQLException e1) {
@@ -69,18 +69,26 @@ public class Main {
             e.printStackTrace();
         }
         
-        DatabaseManager.closeConnection(); 
-        
-        
         System.out.println("Entrer Id de bien à modifier");
         int idu = scanner.nextInt();
         boolean exist = DatabaseManager.exist(id);
         if (!exist) {
             System.out.println("le bien n'existe pas");
-            DatabaseManager.closeConnection();
-            return;
         }
-      
+
+        System.out.println("Type de Bien Immobilier à rechercher: ");
+        String typeb = scanner.next();
+        System.out.println("Prix: ");
+        int prixb = scanner.nextInt();
+        System.out.println("Localisation: ");
+        String localisation = scanner.next();
+            try {
+                DatabaseManager.rechercherBiens(typeb, prixb, localisation);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            
+
     }
     
 
