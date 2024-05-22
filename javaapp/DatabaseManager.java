@@ -168,13 +168,13 @@ public static void rechercherBiens(String typeb, int prixb, String localisation)
 }
 
 public static Client recupererClient(int idClient) {
-    String query = "SELECT id_client, nom FROM clients WHERE id_client = ?";
+    String query = "SELECT id_client, nomc FROM client WHERE id_client = ?";
     try (Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
         preparedStatement.setInt(1, idClient);
         try (ResultSet resultSet = preparedStatement.executeQuery()) {
             if (resultSet.next()) {
-                String nom = resultSet.getString("nom");
+                String nom = resultSet.getString("nomc");
                 return new Client();
             }
         }
