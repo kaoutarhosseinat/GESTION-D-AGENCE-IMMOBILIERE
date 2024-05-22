@@ -1,25 +1,40 @@
-DROP PROCEDURE test_Data;
+
 DROP TABLE  BIEN_IMMOBILIERS  CASCADE CONSTRAINTS;
 DROP TABLE agent_immb  CASCADE CONSTRAINTS;
 DROP table client CASCADE CONSTRAINTS;
 DROP table transactions CASCADE CONSTRAINTS;
 
-CREATE TABLE agent_immb (
-    ID_Agent NUMBER(10) PRIMARY KEY NOT NULL,
-    noma VARCHAR2(20) NOT NULL,
-    prenoma VARCHAR2(20) NOT NULL
+
+drop table agent_immb
+/
+drop TABLE BIEN_IMMOBILIERS
+/
+drop TABLE CLIENT
+/
+drop table transactions
+/
+drop table rendez_vous
+/
+
+
+
+CREATE TABLE agent_immb(
+    ID_Agent number (10) PRIMARY KEY not null,
+    noma varchar2(20) not null,
+    prenoma varchar2(20) not null
 )
 /
 
-CREATE TABLE BIEN_IMMOBILIERS (
-    id_bienimm NUMBER(10) PRIMARY KEY NOT NULL,
-    typebi VARCHAR2(30) NOT NULL,
-    sizebi NUMBER(10) NOT NULL,
-    PRIX NUMBER(10) NOT NULL,
-    localisation VARCHAR2(50) NOT NULL,
-    descbi VARCHAR2(500) NOT NULL,
-    ID_Agent NUMBER(10) NOT NULL,
-    FOREIGN KEY(ID_Agent) REFERENCES agent_immb(ID_Agent)
+CREATE TABLE BIEN_IMMOBILIERS(
+    id_bienimm number(10) PRIMARY KEY  not null,
+    typebi varchar2(30) not null,
+    sizebi number(10,1) not null,
+    PRIX number(10,1) not null,
+    localisation varchar2(50) not null,
+    descbi varchar2(500) not null,
+    ID_Agent number(10) not null,
+    FOREIGN KEY(ID_Agent)
+    REFERENCES agent_immb(ID_Agent)
 )
 /
 CREATE TABLE CLIENT(
@@ -44,25 +59,25 @@ CREATE TABLE transactions(
     REFERENCES BIEN_IMMOBILIERS(id_bienimm)
 )
 /
+CREATE TABLE rendez_vous(
+    id_rdv number(10) not null ,
+    date_rdv date not null,
+    id_client number(10) not null,
+    FOREIGN KEY (id_client)
+    REFERENCES CLIENT (id_client)
+)
+/
 
 
 INSERT INTO CLIENT VALUES(1,'hosseinat','kaoutar','achteur','villa 5 etage',1);
 
 INSERT INTO agent_immb (ID_Agent, noma, prenoma) VALUES (1, 'Agent 1', 'Last Name 1');
 INSERT INTO agent_immb (ID_Agent, noma, prenoma) VALUES (2, 'Agent 2', 'Last Name 2');
-
-
-
-CREATE OR REPLACE PROCEDURE test_Data AS
-BEGIN
-    INSERT INTO BIEN_IMMOBILIERS(id_bienimm, typebi, taille, PRIX, localisation, descbi,ID_Agent) VALUES  (1, 'villa', 800, 9800000, 'hydra',
+INSERT INTO BIEN_IMMOBILIERS(id_bienimm, typebi, sizebi , PRIX, localisation, descbi,ID_Agent) VALUES  (1, 'villa', 800, 9800000, 'hydra',
         'salam elikoum khawty l3zaz lyoum jebnalkoum villa fakhma R+2 fi ar9a a7ya2 al3asima b 9 mlayer w 800 bi dafter 3a9ari w 3a9ed milkiya ', 1);
-    INSERT INTO BIEN_IMMOBILIERS (id_bienimm, typebi, taille, PRIX, localisation, descbi,ID_Agent)  VALUES (2, 'villa', 800, 9800000, 'hydra',
+INSERT INTO BIEN_IMMOBILIERS (id_bienimm, typebi, sizebi , PRIX, localisation, descbi,ID_Agent)  VALUES (2, 'villa', 800, 9800000, 'hydra',
         'salam elikoum khawty l3zaz lyoum jebnalkoum villa fakhma R+2 fi ar9a a7ya2 al3asima b 9 mlayer w 800 bi dafter 3a9ari w 3a9ed milkiya ', 2);
-END
-/
 
-EXEC test_Data;
 
 
 
