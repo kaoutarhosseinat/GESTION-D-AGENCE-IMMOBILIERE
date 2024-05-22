@@ -2,10 +2,10 @@ package javaapp;
 
 public class BienImmobilier {
   private int id_bien_imm;
-  private String typeb;
+  private static String typeb;
   private int sizeb;
   private int prix;
-  private String localisation;
+  private static String localisation;
   private String descbi;
   private int id_agent;
 
@@ -17,7 +17,7 @@ public class BienImmobilier {
   public void setid_bienimm(int id_bien_imm){
     this.id_bien_imm = id_bien_imm;
   }
-  public String getType(){
+  public static String getType(){
     return typeb;
   }
   public void setType(String typeb){
@@ -38,7 +38,7 @@ public class BienImmobilier {
       this.prix = prix;
   }
   
-  public String getLocalisation() {
+  public static String getLocalisation() {
       return localisation;
   }
 

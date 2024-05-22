@@ -3,8 +3,8 @@ package javaapp;
 import java.sql.Date;
 public class Transactions {
     private int numtransaction;
-    private String typeT;
-    private double montant;
+    private static String typeT;
+    private static double montant;
     private Date date;
     private Contrat contrat;
     private int id_client;
@@ -32,7 +32,7 @@ public class Transactions {
             this.id_client = id_client;
         }
 
-        public double getMontant() {
+        public static double getMontant() {
             return montant;
         }
 
@@ -40,7 +40,7 @@ public class Transactions {
             this.montant = montant;
         }
 
-        public String getType() {
+        public static String getType() {
             return typeT;
         }
 

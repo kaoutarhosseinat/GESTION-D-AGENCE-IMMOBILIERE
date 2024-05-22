@@ -2,10 +2,10 @@ package javaapp;
 
 public class AgentImmobilier {
     public int id_agent;
-    private String nom;
-    private String prenoma;
+    public static String nom;
+    public String prenoma;
 
-    public String getNom() {
+    public static String getNom() {
         return nom;
     }
     public void setNom(String nom) {

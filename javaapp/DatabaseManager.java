@@ -149,25 +149,32 @@ public static void rechercherBiens(String typeb, int prixb, String localisation)
     }
     
     public static void ajouterClient(Client client) throws SQLException {
-        String query = "INSERT INTO client (id_client, nomc, prenomc, typec,demandec,numTransaction) VALUES (?, ?, ?)";
+        if (recupererClient(client.getId_client()) != null) {
+            System.out.println("Un client avec le même ID existe déjà dans la base de données.");
+            return;
+        }
+
+        String query = "INSERT INTO client (id_client, nomc, prenomc, typec, demandec, numTransaction) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, client.getId_client());
             preparedStatement.setString(2, client.getNomc());
             preparedStatement.setString(3, client.getPreNomc());
             preparedStatement.setString(4, client.getTypec());
             preparedStatement.setString(5, client.getdemandec());
             preparedStatement.setInt(6, client.getNumTransaction());
-            
+
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Client ajouté avec succès.");
             } else {
                 System.out.println("Échec de l'ajout du client.");
             }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de l'ajout du client : " + e.getMessage());
         }
-
     }
+    
     public static void modifierClient(Client client) throws SQLException {
         String query = "UPDATE client SET nomc=?,prenomc=?,typec=?,demandec=?,numTransaction=? WHERE id_client=?";
         try (Connection connection = DatabaseManager.getConnection();
@@ -203,26 +210,6 @@ public static void rechercherBiens(String typeb, int prixb, String localisation)
             }
         }
     }
-    public void enregistrerPaiement(Transactions tran) {
-    try (Connection connection = DatabaseManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO PAIEMENTS (numTransaction, paiement, dateT, typeT, id_client, id_bienimm) VALUES (?, ?, ?)")) {
-        preparedStatement.setInt(1,tran.getNumTransaction());
-        preparedStatement.setDouble(2,tran.getMontant());
-        preparedStatement.setDate(3,tran.getDate());
-        preparedStatement.setString(3, tran.getType());
-        preparedStatement.setInt(3, tran.getId_client());
-        preparedStatement.setInt(3, tran.getId_bien_imm());
-        int rowsAffected = preparedStatement.executeUpdate();
-        if (rowsAffected > 0) {
-            System.out.println("Paiement enregistré avec succès.");
-        } else {
-            System.out.println("Échec de l'enregistrement du paiement.");
-        }
-    } catch (SQLException e) {
-    }
-}
-
 public static Client recupererClient(int idClient) {
     String query = "SELECT id_client, nomc FROM client WHERE id_client = ?";
     try (Connection connection = getConnection();
@@ -239,6 +226,44 @@ public static Client recupererClient(int idClient) {
     }
     return null;
 }
+
+public static void enregistrerPaiement(Transactions tran) {
+    try (Connection connection = DatabaseManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO PTRANSACTIONS (numTransaction, paiement, dateT, typeT, id_client, id_bienimm) VALUES (?, ?, ?)")) {
+        preparedStatement.setInt(1,tran.getNumTransaction());
+        preparedStatement.setDouble(2,tran.getMontant());
+        preparedStatement.setDate(3,tran.getDate());
+        preparedStatement.setString(3, tran.getType());
+        preparedStatement.setInt(3, tran.getId_client());
+        preparedStatement.setInt(3, tran.getId_bien_imm());
+        int rowsAffected = preparedStatement.executeUpdate();
+        if (rowsAffected > 0) {
+            System.out.println("Paiement enregistré avec succès.");
+        } else {
+            System.out.println("Échec de l'enregistrement du paiement.");
+        }
+    } catch (SQLException e) {
+    }
+}
+
+public static void enregistrerContrat( String agentNom, String  bienType, String transType,String bienLocalisation, Double transMontant) {
+    String contenu = "Contrat entre l'agent immobilier " + AgentImmobilier.getNom()
+            + " et le client pour le bien immobilier de type " +
+            BienImmobilier.getType() + " situé à " + BienImmobilier.getLocalisation() + ". Transaction du type " +
+            Transactions.getType() + " d'un montant de " + Transactions.getMontant() + " Dinars";
+
+    try (FileWriter writer = new FileWriter("contrat.txt")) {
+        writer.write(contenu);
+        System.out.println("Contrat enregistré avec succès dans le fichier contrat.txt.");
+    } catch (IOException e) {
+        System.out.println("Erreur lors de l'enregistrement du contrat : " + e.getMessage());
+    }
+}
+
+
+
+
 
 public static void planifierRendezVous(Client client, int id_agent, Date dateRendezVous) {
     int idClient = client.getId_client();
