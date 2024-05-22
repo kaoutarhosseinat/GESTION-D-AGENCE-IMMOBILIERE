@@ -1,3 +1,4 @@
+
 drop table agent_immb
 /
 drop TABLE BIEN_IMMOBILIERS
@@ -8,6 +9,7 @@ drop table transactions
 /
 drop table rendez_vous
 /
+
 
 
 CREATE TABLE agent_immb(
@@ -35,13 +37,11 @@ CREATE TABLE CLIENT(
     prenomc varchar2(20) not null,
     typec varchar2(15) not null,
     demandec varchar2(100) not null,
-    numTransaction number(10) not null,
-    FOREIGN KEY(numTransaction)
-    REFERENCES transactions(numTransaction)
+    numTransaction number(10) not null
 )
 /
 CREATE TABLE transactions(
-    numTransaction number(10) PRIMARY KEY  not null,
+    numTransaction number(10) UNIQUE,
     typeT varchar2(15) not null,
     paiement number(10) not null,
     dateT date not null ,

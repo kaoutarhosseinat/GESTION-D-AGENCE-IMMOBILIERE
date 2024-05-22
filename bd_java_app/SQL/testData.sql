@@ -1,6 +1,8 @@
 DROP PROCEDURE test_Data;
 DROP TABLE  BIEN_IMMOBILIERS  CASCADE CONSTRAINTS;
 DROP TABLE agent_immb  CASCADE CONSTRAINTS;
+DROP table client CASCADE CONSTRAINTS;
+DROP table transactions CASCADE CONSTRAINTS;
 
 CREATE TABLE agent_immb (
     ID_Agent NUMBER(10) PRIMARY KEY NOT NULL,
@@ -26,13 +28,26 @@ CREATE TABLE CLIENT(
     prenomc varchar2(20) not null,
     typec varchar2(15) not null,
     demandec varchar2(100) not null,
-    numTransaction number(10) not null,
-    FOREIGN KEY(numTransaction)
-    REFERENCES transactions(numTransaction)
+    numTransaction number(10) not null
+)
+/
+CREATE TABLE transactions(
+    numTransaction number(10) UNIQUE,
+    typeT varchar2(15) not null,
+    paiement number(10) not null,
+    dateT date not null ,
+    id_client number(10) not null,
+    FOREIGN KEY(id_client)
+    REFERENCES CLIENT(id_client),
+    id_bienimm number(10) not null,
+    FOREIGN KEY (id_bienimm)
+    REFERENCES BIEN_IMMOBILIERS(id_bienimm)
 )
 /
 
-INSERT INTO CLIENT VALUES(1,'hosseinat','kaoutar','achteur psq mhnya','villa 5 etage',1)
+
+INSERT INTO CLIENT VALUES(1,'hosseinat','kaoutar','achteur','villa 5 etage',1);
+
 INSERT INTO agent_immb (ID_Agent, noma, prenoma) VALUES (1, 'Agent 1', 'Last Name 1');
 INSERT INTO agent_immb (ID_Agent, noma, prenoma) VALUES (2, 'Agent 2', 'Last Name 2');
 
