@@ -20,7 +20,7 @@ public class Main {
         }
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("ID Bien Immobillier: ");
+        /*System.out.println("ID Bien Immobillier: ");
         int id_bienimm = scanner.nextInt();
 
         System.out.println("Type de Bien Immobillier: ");
@@ -85,11 +85,34 @@ public class Main {
             try {
                 DatabaseManager.rechercherBiens(typeb, prixb, localisation);
             } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            
+                e.printStackTrace();} */
+                
 
-    }
+            System.out.print("Entrez l'ID du client: ");
+            int idClient = scanner.nextInt();
+            scanner.nextLine(); 
+
+            
+            Client client = DatabaseManager.recupererClient(idClient);
+            if (client == null) {
+                System.out.println("Client non trouvé dans la base de données.");
+                return;
+            }
+
+        System.out.print("Entrez l'ID de l'agent immobilier: ");
+        int idagent = scanner.nextInt();
+
+        System.out.print("Entrez la date du rendez-vous (AAAA-MM-JJ): ");
+        String dateStr = scanner.next();
+        Date dateRendezVous = Date.valueOf(dateStr);
+
+
+         DatabaseManager.planifierRendezVous(client, idagent, dateRendezVous);
+
+        scanner.close();
+            }
+
+       
     
 
 

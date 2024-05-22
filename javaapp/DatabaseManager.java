@@ -2,6 +2,7 @@ package javaapp;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -165,7 +166,50 @@ public static void rechercherBiens(String typeb, int prixb, String localisation)
     } catch (SQLException e) {
     }
 }
+
+public static Client recupererClient(int idClient) {
+    String query = "SELECT id_client, nom FROM clients WHERE id_client = ?";
+    try (Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        preparedStatement.setInt(1, idClient);
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                String nom = resultSet.getString("nom");
+                return new Client();
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;
 }
+
+public static void planifierRendezVous(Client client, int id_agent, Date dateRendezVous) {
+    int idClient = client.getId_client();
+    enregistrerRendezVous(dateRendezVous, idClient);
+    System.out.println("Rendez-vous planifié avec succès.");
+}
+
+private static void enregistrerRendezVous(Date dateRdv, int idClient) {
+        String query = "INSERT INTO rendez_vous (date_rdv, id_client) VALUES (?, ?)";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setDate(1, dateRdv); 
+            preparedStatement.setInt(2, idClient);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Rendez-vous enregistré avec succès dans la base de données.");
+            } else {
+                System.out.println("Échec de l'enregistrement du rendez-vous dans la base de données.");
+            }
+        } catch (SQLException e) {
+            
+        }
+
+    }
+}
+
 
 
 

@@ -20,9 +20,23 @@ CREATE TABLE BIEN_IMMOBILIERS (
     FOREIGN KEY(ID_Agent) REFERENCES agent_immb(ID_Agent)
 )
 /
+CREATE TABLE CLIENT(
+    id_client number(10) PRIMARY KEY  not null,
+    nomc varchar2(20) not null,
+    prenomc varchar2(20) not null,
+    typec varchar2(15) not null,
+    demandec varchar2(100) not null,
+    numTransaction number(10) not null,
+    FOREIGN KEY(numTransaction)
+    REFERENCES transactions(numTransaction)
+)
+/
 
+INSERT INTO CLIENT VALUES(1,'hosseinat','kaoutar','achteur psq mhnya','villa 5 etage',1)
 INSERT INTO agent_immb (ID_Agent, noma, prenoma) VALUES (1, 'Agent 1', 'Last Name 1');
 INSERT INTO agent_immb (ID_Agent, noma, prenoma) VALUES (2, 'Agent 2', 'Last Name 2');
+
+
 
 CREATE OR REPLACE PROCEDURE test_Data AS
 BEGIN
