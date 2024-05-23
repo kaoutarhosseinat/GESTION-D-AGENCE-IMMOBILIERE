@@ -154,6 +154,8 @@ public class Main {
         }
 
         scanner.close();
+
+        
      System.out.println("Supprimer un client :");
         System.out.println("ID du client à supprimer : ");
         int idClientASupprimer = scanner.nextInt();
